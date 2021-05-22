@@ -7,7 +7,9 @@
 :- http_handler(root(weather), weather(M), [method(M)]).
 
 server(Port) :-
-	http_server(http_dispatch, [port(Port)]).%,get(_).
+	http_server(http_dispatch, [port(Port)]).
+server(Port, wait):-
+	http_server(http_dispatch, [port(Port)]),get(_).
 
 home(_Request) :-
 	reply_html_page(title('REST Example'),
