@@ -4,9 +4,9 @@
 <body>
     <form id="weatherForm">
         <label for="city">City: </label><br>
-        <input type="text" id="city" name="city" value="Cracow"><br>
-        <label for="date">Date: </label><br>
-        <input type="text" id="date" name="date" value="YYYY-MM-DD"><br><br>
+        <input type="text" id="city" name="city" value="Krakow"><br>
+        <label for="country">Country: </label><br>
+        <input type="text" id="country" name="country" value="PL"><br><br>
         <input type="submit" value="Submit">
     </form>
 
@@ -15,7 +15,7 @@
         thisForm.addEventListener('submit', async function (e) {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(thisForm).entries());
-            window.location.href = "/weather/check/" + formData["city"] + "/" + formData["date"];
+            window.location.href = "/weather/" + formData["city"] + "/" + formData["country"];
         });
     </script>
 </body>
