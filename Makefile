@@ -1,13 +1,14 @@
-GOAL="server(8080, wait)"
+GOAL="server(8080, standalone)"
+GOAL_DEV="server(8080)"
 MAIN_FILE=server.pl
 BUILD_DIR=build
 SRC_DIR=src
 
+run-dev:
+	swipl -s $(SRC_DIR)/$(MAIN_FILE) -g $(GOAL_DEV)
+
 compile:
 	swipl --goal=$(GOAL) --stand_alone=true -o $(BUILD_DIR)/server -c $(SRC_DIR)/$(MAIN_FILE)
-
-run-dev:
-	swipl -s $(SRC_DIR)/$(MAIN_FILE) -g $(GOAL)
 
 run: compile
 	$(BUILD_DIR)/server
