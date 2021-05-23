@@ -2,7 +2,7 @@ GOAL="server(8080, standalone)"
 GOAL_DEV="server(8080)"
 MAIN_FILE=server.pl
 BUILD_DIR=build
-SRC_DIR=src
+SRC_DIR=.
 
 run-dev:
 	swipl -s $(SRC_DIR)/$(MAIN_FILE) -g $(GOAL_DEV)

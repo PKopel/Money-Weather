@@ -37,9 +37,11 @@ currency_check(Currency, Date, _Request) :-
     reply_json_dict(Answer).
 
 
-get_forecast(City, Date, _{info:Info, data:Data}) :-
-    atomic_list_concat([check, weather, in, City, on, Date],' ',Info),
-	Data = null.
+get_forecast(City, _Date, _{info:Info, data:Data}) :-
+	API_KEY = '202a41286833893c0e40304cbbde2b57',
+    atomic_list_concat([check, weather, in, City],' ',Info),
+	atomic_list_concat(['http://api.openweathermap.org/data/2.5/weather?q=', City, '&appid=', API_KEY],URL),
+	http_get(URL, Data, []).
 
 get_exchange_rate(Currency, Date, _{info:Info, data:Data}):-
     atomic_list_concat([exchange, rate, for, Currency, on, Date],' ',Info),
