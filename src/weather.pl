@@ -1,4 +1,4 @@
-:- module(weather,[get_forecast/3]).
+:- module(weather,[get_forecast/4]).
 :- use_module(library(http/http_client)).
 :- use_module(library(http/http_json)).
 :- use_module(library(http/http_ssl_plugin)).
@@ -55,11 +55,13 @@ get_owm_url(City, _Country, URL):-
            path('/data/2.5/weather'), 
            search([q=City,appid=API_KEY])]. 
     
-get_forecast(City, Country, _{info:Info, temperature:Avg}) :-
+get_forecast(City, Country, Info, Result) :-
     atomic_list_concat([temperature, in, City],' ',Info),
     get_owm_url(City, Country, OWM),
     get_met_url(City, Country, MET),
     maplist(http_get, [OWM, MET], Data),
     extract_temperatures(Data,Temps),
-    avg(Temps, Avg).
+    avg(Temps, Avg),
+    format(atom(Result), '~2f', [Avg]).
+
 

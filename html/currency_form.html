@@ -5,8 +5,16 @@
     <form id="currencyForm">
         <label for="currency">Currency: </label><br>
         <input type="text" id="currency" name="currency" value="PLN"><br>
-        <label for="date">Date: </label><br>
+        <label for="query">Ask for: </label><br>
+        <select id="query" name="query">
+            <option value="rates">Rates on specific date</option>
+            <option value="average">Average rates in period</option>
+            <option value="change">Change in rates in period</option>
+        </select><br>
+        <label for="date">Start Date: </label><br>
         <input type="text" id="date" name="date" value="YYYY-MM-DD"><br><br>
+        <label for="date">End Date (only for average or change): </label><br>
+        <input type="text" id="endDate" name="endDate" value="YYYY-MM-DD"><br><br>
         <input type="submit" value="Submit">
     </form>
 
@@ -15,7 +23,9 @@
         thisForm.addEventListener('submit', async function (e) {
             e.preventDefault();
             const formData = Object.fromEntries(new FormData(thisForm).entries());
-            window.location.href = "/currency/" + formData["currency"] + "/" + formData["date"];
+            let href = "/currency/" + formData["query"] + "/" + formData["currency"] + "/" + formData["date"];
+            if (formData["query"] !== "rates") href += "/" + formData["endDate"]
+            window.location.href = href;
         });
     </script>
 </body>

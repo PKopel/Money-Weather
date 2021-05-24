@@ -1,5 +1,5 @@
 GOAL="server(8080, standalone)"
-GOAL_DEV="server(8080)"
+GOAL_DEV="server(8080, dev)"
 MAIN_FILE=server.pl
 BUILD_DIR=build
 SRC_DIR=src

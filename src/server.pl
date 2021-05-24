@@ -2,19 +2,20 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_json)).
+
 :- use_module(weather).
 :- use_module(currency).
 
-:- http_handler(root(.), home, []).
+:- http_handler(root(.), home, [method(get)]).
 :- http_handler(root(form/Type), form(Type), [method(get)]).
 :- http_handler(root(weather/City/Country), weather(City, Country), [method(get)]).
-:- http_handler(root(currency/Currency/Date), currency(Currency, Date), [method(get)]).
+:- http_handler(root(currency/rates/Currency/Date), currency(Currency, Date), [method(get)]).
+:- http_handler(root(currency/Aggregate/Currency/StartDate/EndDate), currency(Aggregate, Currency, StartDate, EndDate), [method(get)]).
 
-server(Port) :-
+server(Port, dev) :-
 	http_server(http_dispatch, [port(Port)]).
 server(Port, standalone):-
 	http_server(http_dispatch, [port(Port)]),
-	repeat,
 	get_char(q).
 
 home(_Request) :-
@@ -30,9 +31,12 @@ form(Type, Request):-
 	http_reply_file(FormHtml, [], Request).
 
 currency(Currency, Date, _Request) :- 
-    get_exchange_rate(Currency, Date, Answer),
-    reply_json_dict(Answer).
+    get_exchange_rate(Currency, Date, Info, Answer),
+    reply_html_page(title('REST Example'), [ h1('Exchange rates'), p([Info, ': ', Answer, ' PLN'])]).
+currency(Aggregate, Currency, StartDate, EndDate, _Request) :- 
+    get_aggregate_rate(Aggregate, Currency, StartDate, EndDate, Info, Answer),
+    reply_html_page(title('REST Example'), [ h1('Exchange rates'), p([Info, ': ', Answer, ' PLN'])]).
 
 weather(City, Country, _Request) :- 
-	get_forecast(City, Country, Answer),
-	reply_json_dict(Answer).
+	get_forecast(City, Country, Info, Answer),
+    reply_html_page(title('REST Example'), [ h1('Weather'), p([Info, ': ', Answer, ' C'])]).
