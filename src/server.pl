@@ -16,7 +16,9 @@ server(Port, dev) :-
 	http_server(http_dispatch, [port(Port)]).
 server(Port, standalone):-
 	http_server(http_dispatch, [port(Port)]),
-	get_char(q).
+	repeat,
+	sleep(60000),
+	1 = 2.
 
 home(_Request) :-
 	reply_html_page(title('REST Example'),
