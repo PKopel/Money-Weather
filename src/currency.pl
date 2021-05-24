@@ -4,5 +4,6 @@
 
 get_exchange_rate(Currency, Date, _{info:Info, data:Data}):-
     atomic_list_concat([exchange, rate, for, Currency, on, Date],' ',Info),
-	atomic_list_concat(['http://api.nbp.pl/api/exchangerates/rates/C/', Currency, '/', Date], URL),
+	atomic_list_concat(['/api/exchangerates/rates/C/', Currency, '/', Date], Path),
+    URL = [protocol(http), host('api.nbp.pl'), path(Path)],
 	http_get(URL, Data, []). 

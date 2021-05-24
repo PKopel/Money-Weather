@@ -4,7 +4,7 @@ MAIN_FILE=server.pl
 BUILD_DIR=build
 SRC_DIR=src
 
-run-dev:
+dev:
 	swipl -s $(SRC_DIR)/$(MAIN_FILE) -g $(GOAL_DEV)
 
 compile:
