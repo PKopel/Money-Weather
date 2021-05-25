@@ -5,7 +5,7 @@
 
 :- use_module(utils).
 
-api_key('202a41286833893c0e40304cbbde2b57').
+api_key('owm_token').
 http_get(URL,Result) :- http_get(URL,Result,[]).
 
 extract_coords([json([name=_, local_names=_, lat=Lat, lon=Lon, country=Country])| _ ], Country, Lon, Lat).
