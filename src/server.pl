@@ -14,7 +14,7 @@
 
 server(Port, dev) :-
 	http_server(http_dispatch, [port(Port)]).
-server(Port, standalone):-
+server(Port, standalone) :-
 	http_server(http_dispatch, [port(Port)]),
 	repeat,
 	sleep(60000),
@@ -28,17 +28,20 @@ home(_Request) :-
 					  p([a(href('/form/currency'), 'Get exchange rates')])
 					]).
 
-form(Type, Request):- 
+form(Type, Request) :- 
 	atomic_list_concat(['html/',Type, '_form.html'], FormHtml),
 	http_reply_file(FormHtml, [], Request).
 
 currency(Currency, Date, _Request) :- 
-    get_exchange_rate(Currency, Date, Info, Answer),
+    atomic_list_concat(['exchange rate for', Currency, on, Date],' ',Info),
+    get_exchange_rate(Currency, Date, Answer),
     reply_html_page(title('REST Example'), [ h1('Exchange rates'), p([Info, ': ', Answer, ' PLN'])]).
 currency(Aggregate, Currency, StartDate, EndDate, _Request) :- 
-    get_aggregate_rate(Aggregate, Currency, StartDate, EndDate, Info, Answer),
+    atomic_list_concat([Aggregate, 'of exchange rates for', Currency, between, StartDate, and, EndDate],' ',Info),
+    get_aggregate_rate(Aggregate, Currency, StartDate, EndDate, Answer),
     reply_html_page(title('REST Example'), [ h1('Exchange rates'), p([Info, ': ', Answer, ' PLN'])]).
 
 weather(City, Country, _Request) :- 
-	get_forecast(City, Country, Info, Answer),
+    atomic_list_concat([temperature, in, City],' ',Info),
+	get_forecast(City, Country, Answer),
     reply_html_page(title('REST Example'), [ h1('Weather'), p([Info, ': ', Answer, ' C'])]).
